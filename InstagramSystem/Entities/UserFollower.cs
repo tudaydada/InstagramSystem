@@ -17,8 +17,7 @@ namespace InstagramSystem.Entities
         public DateTime? CreateAt { get; set; }
 
         public DateTime? UpdateAt { get; set; }
-
-
+        public int Status { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public virtual User Users { get; set; }

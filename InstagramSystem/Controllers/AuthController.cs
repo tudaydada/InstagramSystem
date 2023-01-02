@@ -95,6 +95,14 @@ namespace InstagramSystem.Controllers
 
         }
 
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return Ok("ForgotPassword");
+
+        }
+
         #region [Private method Generate token]
         /// <summary>
         /// Generate Token 
@@ -107,7 +115,7 @@ namespace InstagramSystem.Controllers
 
             var secretKeyBytes = Encoding.UTF8.GetBytes(configuration.GetSection("SecretKey").Value);
 
-            var role = user.RoleId == ((int)EnumUserRole.Admin) ? EnumUserRole.Admin.ToString() : user.RoleId == ((int)EnumUserRole.User) ? EnumUserRole.User.ToString() : "unknow";
+            var role = user.RoleId == ((int)EUserRole.Admin) ? EUserRole.Admin.ToString() : user.RoleId == ((int)EUserRole.User) ? EUserRole.User.ToString() : "unknow";
 
             var tokenDescription = new SecurityTokenDescriptor
             {

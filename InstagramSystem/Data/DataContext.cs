@@ -22,8 +22,8 @@ namespace InstagramSystem.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>().HasData(
-                new UserRole { Id = 1, Name = EnumUserRole.Admin.ToString() },
-                new UserRole { Id = 2, Name = EnumUserRole.User.ToString() } );
+                new UserRole { Id = 1, Name = EUserRole.Admin.ToString() },
+                new UserRole { Id = 2, Name = EUserRole.User.ToString() } );
 
             modelBuilder.Entity<Post>()
                 .HasMany<PostComment>(post => post.PostComments)
