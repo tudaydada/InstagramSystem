@@ -97,9 +97,9 @@ namespace InstagramSystem.Controllers
 
         [HttpPost]
         [Route("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword()
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
         {
-            return Ok("ForgotPassword");
+            return Ok(forgotPassword);
 
         }
 
@@ -128,7 +128,7 @@ namespace InstagramSystem.Controllers
 
                     new Claim("TokenId", Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
             };
 
