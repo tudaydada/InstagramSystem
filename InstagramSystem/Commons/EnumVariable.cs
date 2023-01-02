@@ -14,7 +14,9 @@
         Reject = 3
     }
 
-    //public class Role
-    //{
-    //}
+    enum EPostType
+    {
+        None = 0,
+        Sell =1,
+    }
 }

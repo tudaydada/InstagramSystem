@@ -38,7 +38,7 @@ services.AddScoped<IUserRepository, UserRepository>();
 
 var secretKey = builder.Configuration.GetSection("SecretKey").Value;
 var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
-
+services.AddHttpContextAccessor();
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {

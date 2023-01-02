@@ -123,7 +123,7 @@ namespace InstagramSystem.Controllers
                     //new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.FullName),
                     new Claim(ClaimTypes.Role, role),
-                    new Claim("UserName", user.UserName),
+                    new Claim("Username", user.UserName),
                     new Claim("UserId", user.Id.ToString()),
 
                     new Claim("TokenId", Guid.NewGuid().ToString())

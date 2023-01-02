@@ -22,6 +22,7 @@ namespace InstagramSystem.Entities
         public string? hagtag { get; set; }
 
         public int? State { get; set;}
+        public int Privacy { get; set; }
 
         [MaxLength(1000)]
         public string? FileURL { get; set; }
