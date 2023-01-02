@@ -1,21 +1,24 @@
 ﻿using InstagramSystem.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InstagramSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostController : ControllerBase
     {
         #region Search
         [HttpGet]
-        [Route("i={id}")]
+        [Route("")]
+        [AllowAnonymous]
         public IActionResult GetByUsername(int id)
         {
             return Ok(id);
         }
         [HttpGet]
-        [Route("search?s={search}")]
+        [Route("search")]
         public IActionResult Search(string search)
         {
             return Ok(search);
@@ -27,7 +30,7 @@ namespace InstagramSystem.Controllers
             return Ok(search);
         }
         [HttpGet]
-        [Route("hastag?#{hastag}")]
+        [Route("hastag")]
         public IActionResult SearchByHastag(string hastag)
         {
             return Ok(hastag);
@@ -47,13 +50,13 @@ namespace InstagramSystem.Controllers
             return Ok(post);
         }
         [HttpPatch]
-        [Route("Privacy?type={type}")]
+        [Route("Privacy")]
         public IActionResult UpdatePrivacy(string type)
         {
             return Ok(type);
         }
         [HttpPatch]
-        [Route("i={id}")]
+        [Route("")]
         public IActionResult Delete(int id)
         {
             return Ok(id);

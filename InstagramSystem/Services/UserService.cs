@@ -85,10 +85,10 @@ namespace InstagramSystem.Services
             var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext != null)
             {
-                    user.FullName = httpContext.User.FindFirstValue(ClaimTypes.Name) ?? "",
-                    user.UserId = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("UserId"))?.Value ?? "",
-                    user.Role = httpContext.User.FindFirstValue(ClaimTypes.Role) ?? "",
-                    user.UserName = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("UserName"))?.Value ?? ""
+                user.FullName = httpContext.User.FindFirstValue(ClaimTypes.Name) ?? "";
+                user.UserId = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("UserId"))?.Value ?? "";
+                user.Role = httpContext.User.FindFirstValue(ClaimTypes.Role) ?? "";
+                user.UserName = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("UserName"))?.Value ?? "";
                 return user;
             }
             return user;

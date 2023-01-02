@@ -14,7 +14,7 @@ namespace InstagramSystem.Controllers
             _userService = userService;
         }
         [HttpGet]
-        [Route("Username={username}")]
+        [Route("")]
         public IActionResult GetByUsername(string username)
         {
             return Ok(username);
@@ -26,7 +26,7 @@ namespace InstagramSystem.Controllers
             return Ok(id);
         }
         [HttpGet]
-        [Route("Search?s={search}")]
+        [Route("Search")]
         public IActionResult Search(string search)
         {
             return Ok(search);
@@ -38,13 +38,13 @@ namespace InstagramSystem.Controllers
             return Ok(user);
         }
         [HttpGet]
-        [Route("Friends?username={username}")]
+        [Route("Friends")]
         public IActionResult GetFriends(string username)
         {
             return Ok(username);
         }
         [HttpGet]
-        [Route("Friends?id={id}")]
+        [Route("Friends")]
         public IActionResult GetFriends(int id)
         {
             return Ok(id);
