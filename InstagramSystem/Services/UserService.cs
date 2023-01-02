@@ -39,7 +39,7 @@ namespace InstagramSystem.Services
 
         public async Task<User> GetUserById(int Id)
         {
-            return await userRepository.GetUserById(Id);
+            return await userRepository.GetByIdAsync(Id);
         }
 
         public async Task<User> register(RegisterDTO registerDTO)

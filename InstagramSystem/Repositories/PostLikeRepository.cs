@@ -1,6 +1,18 @@
-﻿namespace InstagramSystem.Repositories
+﻿using InstagramSystem.Data;
+using InstagramSystem.Entities;
+
+namespace InstagramSystem.Repositories
 {
-    public class PostLikeRepository
+
+    public interface IPostLikeRepository : IBaseRepository<PostLike>
     {
+
+    }
+    public class PostLikeRepository : BaseRepository<PostLike>, IPostLikeRepository
+    {
+        public PostLikeRepository(DataContext context) : base(context)
+        {
+        }
+
     }
 }

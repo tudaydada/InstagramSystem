@@ -11,12 +11,12 @@ namespace InstagramSystem.Repositories
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<T>> GetAllAsync();
-        
+
         /// <summary>
         /// GetById 
         /// </summary>
         /// <returns></returns>
-        //Task<IEnumerable<T>> GetByIdAsync(int Id) ;
+        Task<T> GetByIdAsync(int Id);
 
         /// <summary>
         /// Insert
@@ -118,10 +118,10 @@ namespace InstagramSystem.Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        //public async Task<IEnumerable<T>> GetByIdAsync(int Id)
-        //{
-        //    return await context.Set<T>().FindAsync(Id);
-        //}
+        public async Task<T> GetByIdAsync(int Id)
+        {
+            return await context.Set<T>().FindAsync(Id);
+        }
 
         /// <summary>
         /// Save
