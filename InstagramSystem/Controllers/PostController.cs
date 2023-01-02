@@ -23,7 +23,7 @@ namespace InstagramSystem.Controllers
         {
             return Ok(search);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("search")]
         public IActionResult Search(AdvancePostSearchDto search)
         {
@@ -72,9 +72,25 @@ namespace InstagramSystem.Controllers
         #endregion
         #region Comment
         //todo
+        [HttpPost]
+        [Route("Comment")]
+        public IActionResult Like(int postId, string comment)
+        {
+            return Ok(new
+            {
+                postId,
+                comment
+            });
+        }
         #endregion
         #region Like
         //todo
+        [HttpGet]
+        [Route("Like")]
+        public IActionResult Like(int postId)
+        {
+            return Ok(postId);
+        }
         #endregion
     }
 }
