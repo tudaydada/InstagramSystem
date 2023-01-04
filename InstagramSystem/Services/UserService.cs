@@ -93,6 +93,8 @@ namespace InstagramSystem.Services
             }
             return user;
         }
+
+        #region [Private method GetMD5]
         private string GetMD5(string str)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
@@ -106,7 +108,7 @@ namespace InstagramSystem.Services
             }
             return byte2String;
         }
-
+        #endregion
 
     }
 }

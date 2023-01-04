@@ -1,4 +1,5 @@
 ﻿using InstagramSystem.DTOs;
+using InstagramSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,16 @@ namespace InstagramSystem.Controllers
     [Authorize]
     public class PostController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+        private readonly IPostService _postService ;
+
+        public PostController(IConfiguration configuration, IPostService postService)
+        {
+            _configuration = configuration;
+            _postService = postService;
+        }
+
+
         #region Search
         [HttpGet]
         [Route("")]
