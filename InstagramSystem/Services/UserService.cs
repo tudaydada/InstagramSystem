@@ -1,4 +1,5 @@
-﻿using InstagramSystem.DTOs;
+﻿using InstagramSystem.Data;
+using InstagramSystem.DTOs;
 using InstagramSystem.Entities;
 using InstagramSystem.Repositories;
 using System.Security.Claims;
@@ -7,30 +8,37 @@ using System.Text;
 
 namespace InstagramSystem.Services
 {
+    public class UserClaim
+    {
+        public string UserName { get; set; }
+        public string UserEmail { get; set; }
+        public string FullName { get; set; }
+        public string UserId { get; set; }
+        public string Role { get; set; }
+    }
     public interface IUserService
     {
         Task<User> GetUserById(int Id);
 
         Task<User> register(RegisterDTO registerDTO);
         Task<User> login(LoginDTO loginDTO);
+        ResponseDTO ForgotPassword(ForgotPasswordDto forgotPasswordDto);
         UserClaim GetCurrentUser();
     }
-    public class UserClaim {
-        public string UserName { get; set;}
-        public string UserEmail { get; set;}
-        public string FullName { get; set; }
-        public string UserId { get; set; }
-        public string Role { get; set; }
-    }
+    
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly DataContext _context;
+        private readonly IEmailService _emailService;
 
-        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor,DataContext context,IEmailService emailService)
         {
             this.userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
+            _context = context;
+            _emailService = emailService;
         }
 
         public async Task<User> login(LoginDTO loginDTO)
@@ -78,6 +86,49 @@ namespace InstagramSystem.Services
             return null;
         }
 
+        public ResponseDTO ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.UserName == forgotPasswordDto.UserName && x.Email == forgotPasswordDto.Email);
+            if (user == null)
+            {
+                return new ResponseDTO
+                {
+                    Success = false,
+                    Message = "Not found",
+                    Code = 404
+                };
+            }
+            else
+            {
+                var password = user.UserName + (DateTime.Now.ToString());
+                var emailForm = new EmailFormDto();
+                emailForm.Subject = "Reset Password";
+                emailForm.Body = "UserName:"+user.UserName+"</br>Password:"+ password;
+                emailForm.To= user.Email;
+                try
+                {
+                    _emailService.SendEmail(emailForm);
+                    user.Password = GetMD5(password);
+                    _context.Users.Update(user);
+                    _context.SaveChanges();
+                    return new ResponseDTO
+                    {
+                        Success = true,
+                        Message = "Please Check Your Email to get password"
+                    };
+                }
+                catch(Exception ex)
+                {
+                    return new ResponseDTO
+                    {
+                        Success = false,
+                        Message = ex.Message,
+                        Code = 500
+                    };
+                }
+            }
+        }
+
 
         public UserClaim GetCurrentUser()
         {
@@ -106,7 +157,6 @@ namespace InstagramSystem.Services
             }
             return byte2String;
         }
-
 
     }
 }

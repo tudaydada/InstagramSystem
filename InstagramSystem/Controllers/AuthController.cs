@@ -15,12 +15,12 @@ namespace InstagramSystem.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration configuration;
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
 
         public AuthController(IConfiguration configuration, IUserService userService)
         {
             this.configuration = configuration;
-            this.userService = userService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -37,7 +37,7 @@ namespace InstagramSystem.Controllers
             }
             else
             {
-                var user = userService.register(registerDTO);
+                var user = _userService.register(registerDTO);
                 if (user == null)
                 {
                     return Ok(new ResponseDTO
@@ -73,7 +73,7 @@ namespace InstagramSystem.Controllers
             }
             else
             {
-                var user = await userService.login(loginDTO);
+                var user = await _userService.login(loginDTO);
                 if (user == null)
                 {
                     return Ok(new ResponseDTO
@@ -99,7 +99,20 @@ namespace InstagramSystem.Controllers
         [Route("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
         {
-            return Ok(forgotPassword);
+            if(forgotPassword==null || string.IsNullOrEmpty(forgotPassword.Email)||string.IsNullOrEmpty(forgotPassword.UserName))
+            {
+                return BadRequest(new ResponseDTO { Success = false, Message = "Please fill full fields",Code = 400});
+            }
+            var result = _userService.ForgotPassword(forgotPassword);
+            if (result.Success) { 
+                return Ok(result);
+            }
+            else if (result.Code == 404)
+            {
+                return NotFound(result);
+            }
+            else
+                return StatusCode(result.Code);
 
         }
 

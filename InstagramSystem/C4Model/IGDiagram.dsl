@@ -33,7 +33,8 @@ workspace {
                     serviceMedia = component "MediaService" "Intermediate class, call the methods in the MediaRepository to execute query" "Dotnet Core"
                     serviceMessages = component "MessageService" "Intermediate class, call the methods in the MessageRepository to execute query" "Dotnet Core"
                     serviceFbConnector =  component "FbConnectorService" "Intermediate class, Service to interact with FaceBook systems" "Dotnet Core"
-                    
+                    serviceEmails = component "EmailService" "Send Email for some sistuation as forgotpassword or authorize accout" "MailKit/MimeKit"
+
                     repositoryUSers = component "UserRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryPosts = component "PostRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryMedia = component "MediaRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
@@ -76,6 +77,7 @@ workspace {
         mobileApp -> authController "Uses"
         singlePageApplication -> authController "Uses"
         authController -> serviceUsers "Uses"
+        authController -> serviceEmails "Uses"
 
         controllerUSers -> serviceUsers "Uses"
         controllerPosts -> servicePosts "Uses"
