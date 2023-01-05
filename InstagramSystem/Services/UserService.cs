@@ -57,7 +57,7 @@ namespace InstagramSystem.Services
 
         public async Task<User> GetUserById(int Id)
         {
-            return await userRepository.GetUserById(Id);
+            return await userRepository.GetByIdAsync(Id);
         }
 
         public async Task<User> register(RegisterDTO registerDTO)
@@ -144,6 +144,8 @@ namespace InstagramSystem.Services
             }
             return user;
         }
+
+        #region [Private method GetMD5]
         private string GetMD5(string str)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
@@ -157,6 +159,7 @@ namespace InstagramSystem.Services
             }
             return byte2String;
         }
+
 
     }
 }

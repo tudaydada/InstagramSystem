@@ -40,7 +40,6 @@ workspace {
                     repositoryMedia = component "MediaRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryMessages = component "MessagerRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
 
-
                 }
                 
             }
@@ -87,15 +86,19 @@ workspace {
 
         serviceUsers -> repositoryUSers "Uses"
         servicePosts -> repositoryPosts "Uses"
+        servicePosts -> repositoryPostComments "Uses"
+        servicePosts -> repositoryPostLikes "Uses"
         serviceMedia -> repositoryMedia "Uses"
         serviceMessages -> repositoryMessages "Uses"
         serviceFbConnector -> Facebook "Share information stories and other to" "HTTPs"
         serviceFbConnector -> repositoryMedia "data transfer to store interaction history"
 
-        repositoryUSers -> database "Uses"
-        repositoryPosts -> database "Uses"
-        repositoryMedia -> database "Uses"
-        repositoryMessages -> database "Uses"
+        repositoryUSers -> database "Reads from and writes to" "Framework Entity"
+        repositoryPosts -> database "Reads from and writes to" "Framework Entity"
+        repositoryPostComments -> database "Reads from and writes to" "Framework Entity"
+        repositoryPostLikes -> database "Reads from and writes to" "Framework Entity"
+        repositoryMedia -> database "Reads from and writes to" "Framework Entity"
+        repositoryMessages -> database "Reads from and writes to" "Framework Entity"
 
         singlePageApplication -> controllerUSers    "Make API call to" "Json/HTTPs"
         singlePageApplication -> controllerPosts    "Make API call to" "Json/HTTPs"
