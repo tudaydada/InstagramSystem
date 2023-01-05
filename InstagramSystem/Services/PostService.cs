@@ -29,11 +29,11 @@ namespace InstagramSystem.Services
 
     public class PostService : IPostService
     {
-        private readonly PostRepository _postRepository;
-        private readonly PostCommentRepository _postCommentRepository;
-        private readonly PostLikeRepository _postLikeRepository;
+        private readonly IPostRepository _postRepository;
+        private readonly IPostCommentRepository _postCommentRepository;
+        private readonly IPostLikeRepository _postLikeRepository;
 
-        public PostService(PostRepository postRepository, PostCommentRepository postCommentRepository, PostLikeRepository postLikeRepository)
+        public PostService(IPostRepository postRepository, IPostCommentRepository postCommentRepository, IPostLikeRepository postLikeRepository)
         {
             _postRepository = postRepository;
             _postCommentRepository = postCommentRepository;
