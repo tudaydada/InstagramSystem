@@ -37,7 +37,7 @@ namespace InstagramSystem.Controllers
             }
             else
             {
-                var user = _userService.register(registerDTO);
+                var user = await _userService.register(registerDTO);
                 if (user == null)
                 {
                     return Ok(new ResponseDTO
@@ -103,7 +103,7 @@ namespace InstagramSystem.Controllers
             {
                 return BadRequest(new ResponseDTO { Success = false, Message = "Please fill full fields",Code = 400});
             }
-            var result = _userService.ForgotPassword(forgotPassword);
+            var result = await _userService.ForgotPassword(forgotPassword);
             if (result.Success) { 
                 return Ok(result);
             }

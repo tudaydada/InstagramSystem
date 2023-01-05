@@ -22,20 +22,20 @@ namespace InstagramSystem.Services
 
         Task<User> register(RegisterDTO registerDTO);
         Task<User> login(LoginDTO loginDTO);
-        ResponseDTO ForgotPassword(ForgotPasswordDto forgotPasswordDto);
+        Task<ResponseDTO> ForgotPassword(ForgotPasswordDto forgotPasswordDto);
         UserClaim GetCurrentUser();
     }
     
     public class UserService : IUserService
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly DataContext _context;
         private readonly IEmailService _emailService;
 
         public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor,DataContext context,IEmailService emailService)
         {
-            this.userRepository = userRepository;
+            _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
             _context = context;
             _emailService = emailService;
@@ -45,7 +45,7 @@ namespace InstagramSystem.Services
         {
             User user = new User();
 
-            user = await userRepository.GetUserByUserName(loginDTO.UserName);
+            user = await _userRepository.GetUserByUserName(loginDTO.UserName);
             var hashPass = GetMD5(loginDTO.Password);
 
             if (loginDTO.UserName == user.UserName && hashPass == user.Password)
@@ -57,7 +57,7 @@ namespace InstagramSystem.Services
 
         public async Task<User> GetUserById(int Id)
         {
-            return await userRepository.GetByIdAsync(Id);
+            return await _userRepository.GetByIdAsync(Id);
         }
 
         public async Task<User> register(RegisterDTO registerDTO)
@@ -75,10 +75,10 @@ namespace InstagramSystem.Services
             user.ImageURL = registerDTO.ImageURL;
             user.RoleId = registerDTO.RoleId;
 
-            await userRepository.InsertAsync(user);
-            userRepository.Save();
+            await _userRepository.InsertAsync(user);
+            _userRepository.Save();
 
-            var userResponse = await userRepository.GetUserByUserName(registerDTO.UserName);
+            var userResponse = await _userRepository.GetUserByUserName(registerDTO.UserName);
             if (userResponse != null)
             {
                 return userResponse;
@@ -86,10 +86,10 @@ namespace InstagramSystem.Services
             return null;
         }
 
-        public ResponseDTO ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        public async Task<ResponseDTO> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.UserName == forgotPasswordDto.UserName && x.Email == forgotPasswordDto.Email);
-            if (user == null)
+            var user = await _userRepository.GetUserByUserName(forgotPasswordDto.UserName);
+            if (user == null || !user.Email.Equals(forgotPasswordDto.Email))
             {
                 return new ResponseDTO
                 {
@@ -109,8 +109,8 @@ namespace InstagramSystem.Services
                 {
                     _emailService.SendEmail(emailForm);
                     user.Password = GetMD5(password);
-                    _context.Users.Update(user);
-                    _context.SaveChanges();
+                    _userRepository.Update(user);
+                    _userRepository.Save();
                     return new ResponseDTO
                     {
                         Success = true,
@@ -159,7 +159,7 @@ namespace InstagramSystem.Services
             }
             return byte2String;
         }
-
+        #endregion
 
     }
 }

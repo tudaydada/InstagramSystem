@@ -34,8 +34,9 @@ services.AddDbContext<DataContext>(option => option.UseSqlServer
 
 services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 services.AddScoped<IUserService, UserService>();
-services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IPostService, PostService>();
+services.AddScoped<IEmailService, EmailService>();
+services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IPostRepository, PostRepository>();
 services.AddScoped<IPostCommentRepository, PostCommentRepository>();
 services.AddScoped<IPostLikeRepository, PostLikeRepository>();
