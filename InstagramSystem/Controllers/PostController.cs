@@ -25,9 +25,10 @@ namespace InstagramSystem.Controllers
         [HttpGet]
         [Route("")]
         [AllowAnonymous]
-        public IActionResult GetByUsername(int id)
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(id);
+            var result = await _postService.GetAll();
+            return Ok(result);
         }
         [HttpGet]
         [Route("search")]
@@ -78,9 +79,10 @@ namespace InstagramSystem.Controllers
         #region NewFeed
         [HttpGet]
         [Route("NewFeed")]
-        public IActionResult GetNewFeed()
+        public async Task<IActionResult> GetNewFeed()
         {
-            return Ok("NewFeed");
+             var result = await _postService.GetNewFeeds();
+            return Ok(result);
         }
         #endregion
         #region Comment

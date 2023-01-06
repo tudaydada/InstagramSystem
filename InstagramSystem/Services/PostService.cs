@@ -1,14 +1,19 @@
 ﻿using InstagramSystem.Commons;
+using InstagramSystem.Data;
 using InstagramSystem.DTOs;
 using InstagramSystem.Entities;
 using InstagramSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace InstagramSystem.Services
 {
     public interface IPostService
     {
         // Post
+        Task<List<PostDto>> GetAll();
+        Task<List<PostDto>> GetNewFeeds();
+        Task<List<PostDto>> GetNewFeeds(int userId);
         Task<PostDto> GetPost(int id);
         Task<NewPostDto> CreatePost(NewPostDto post);
         Task<PostDto> Post(PostDto id);
@@ -34,13 +39,14 @@ namespace InstagramSystem.Services
         private readonly IPostCommentRepository _postCommentRepository;
         private readonly IPostLikeRepository _postLikeRepository;
         private readonly IUserService _userService;
-
-        public PostService(IPostRepository postRepository, IPostCommentRepository postCommentRepository, IPostLikeRepository postLikeRepository, IUserService userService)
+        private readonly DataContext _context;
+        public PostService(IPostRepository postRepository, IPostCommentRepository postCommentRepository, IPostLikeRepository postLikeRepository, IUserService userService,DataContext context)
         {
             _postRepository = postRepository;
             _postCommentRepository = postCommentRepository;
             _postLikeRepository = postLikeRepository;
             _userService = userService;
+            _context = context;
         }
 
         #region [Post Service]
@@ -166,6 +172,48 @@ namespace InstagramSystem.Services
             {
                 return null;
             }
+        }
+
+        public async Task<List<PostDto>> GetAll()
+        {
+            var result = new List<PostDto>();
+            var posts = await _context.Posts.Select(x => new PostDto
+            {
+                Id = x.Id,
+                PostLikes= x.PostLikes,
+                Privacy= x.Privacy,
+                PostComments= x.PostComments,
+                Type= x.Type,
+                Content= x.Content,
+                CreateAt= DateTime.Now,
+                hagtag= x.hagtag,
+                Users= x.Users,
+            }).ToListAsync();
+            result.AddRange(posts);
+            return result;
+        }
+
+        public async Task<List<PostDto>> GetNewFeeds()
+        {
+            var user =  _userService.GetCurrentUser();
+            var idUserFollower =  _context.UserFollowers.Where(x => x.UserId == int.Parse(user.UserId)).Select(x=>x.UserFollowerId).ToList();
+            var post = await  _context.Posts.Where(x=> idUserFollower.Contains(x.UserId)).OrderByDescending(x=>x.CreateAt).Select(x => new PostDto
+            {
+                Id = x.Id,
+                PostLikes = x.PostLikes,
+                Privacy = x.Privacy,
+                Type = x.Type,
+                Content = x.Content,
+                CreateAt = DateTime.Now,
+                hagtag = x.hagtag,
+                Users = new User { UserName = x.Users.UserName,Id = x.Id}
+            }).ToListAsync();
+            return post;
+        }
+
+        public Task<List<PostDto>> GetNewFeeds(int userId)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

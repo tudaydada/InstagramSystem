@@ -1,7 +1,9 @@
-﻿using InstagramSystem.Data;
+﻿using InstagramSystem.Commons;
+using InstagramSystem.Data;
 using InstagramSystem.DTOs;
 using InstagramSystem.Entities;
 using InstagramSystem.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -20,7 +22,9 @@ namespace InstagramSystem.Services
     public interface IUserService
     {
         Task<User> GetUserById(int Id);
-
+        Task<UserFollower> FollowUser(int userId);
+        Task<UserFollower> ApproveRequestFollower(int userId);
+        Task<List<string>> GetFriendsById(int userId);
         Task<User> register(RegisterDTO registerDTO);
         Task<User> login(LoginDTO loginDTO);
         Task<ResponseDTO> ForgotPassword(ForgotPasswordDto forgotPasswordDto);
@@ -192,6 +196,41 @@ namespace InstagramSystem.Services
 
             }
             return res.ToString();
+        }
+
+        public async Task<UserFollower> FollowUser(int userId)
+        {
+            var user = GetCurrentUser();
+            var userFollower = new UserFollower();
+            userFollower.UserFollowerId = int.Parse(user.UserId);
+            userFollower.UserId = userId;
+            userFollower.CreateAt = DateTime.Now;
+            userFollower.Status = ((int)EUserFollowerStatus.Pending);
+            _context.UserFollowers.Add(userFollower);
+            _context.SaveChangesAsync();
+            return userFollower;
+
+        }
+
+        public async Task<List<string>> GetFriendsById(int userId)
+        {
+            var idFollower = _context.UserFollowers.Where(x => x.UserId == userId && x.Status== ((int)EUserFollowerStatus.Approve)).Select(x=>x.UserFollowerId).ToList();
+            var result = await _context.Users.Where(x => idFollower.Contains(x.Id)).Select(x=>x.UserName).ToListAsync();
+            return result;
+        }
+
+        public async Task<UserFollower> ApproveRequestFollower(int userId)
+        {
+            var user = GetCurrentUser();
+            var follow = await _context.UserFollowers.Where(x=>x.UserId==int.Parse(user.UserId)&&x.UserFollowerId==userId).FirstOrDefaultAsync();
+            if (follow == null)
+                return null;
+            follow.Status = ((int)EUserFollowerStatus.Approve);
+            _context.UserFollowers.Update(follow);
+            _context.SaveChangesAsync();
+            var result = new UserFollower();
+            result.Users = follow.Users;
+            return result;
         }
         #endregion
 
