@@ -21,8 +21,7 @@ workspace {
 
                     // entities = component "Entities" "Provider info entities, direct mapping with database" "framework Entity"
                     authController = component "Auth Controller" "Authentication and authorizition for user, post, message v,v" "Dotnet core - Json Web Token"
-                    
-
+                
                     controllerUSers = component "UserController" "Directional, Provides API to manage users and interactions where a user follows or unfollows another user" "Dotnet Core Controller"
                     controllerPosts = component "PostController" "Directional, Provides API to allows various posts (photo, video, etc.), interact with posts" "Dotnet Core Controller"
                     controllerMedia = component "MediaController" "Directional, Provides API to allows storage and retrieval of photos and videos from its underlying data store" "Dotnet Core Controller"
@@ -39,6 +38,8 @@ workspace {
                     repositoryPosts = component "PostRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryMedia = component "MediaRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryMessages = component "MessagerRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
+                    repositoryPostComments = component "PostCommentRepository" "Query directly with db, query comment on post" "Framework Entity(LinQ) - 'repository pattern'"
+                    repositoryPostLikes = component "PostLikeRepository" "Query directly with db, query like on post" "Framework Entity(LinQ) - 'repository pattern'"
 
                 }
                 
@@ -49,7 +50,6 @@ workspace {
         InstagramUser -> InstagramSystem "Uses"
         LinkedFBUser -> InstagramSystem "Uses"
         InstagramSystem -> Facebook "Share and interact"
-        
         
         # realationships to/from containers 
         InstagramUser -> webApplication "Visits instagram.com using" "HTTPS"
@@ -66,12 +66,7 @@ workspace {
         mobileApp -> apiApplication "Makes API calls to" "JSON/HTTPS"
         apiApplication -> Facebook "Access token and Call to HTTPs to share stories"
 
-
         #ralationships of component - API Application
-        // controllerUSers    -> authController "Authorizes access for records [HTTPs]"
-        // controllerPosts    -> authController "Authorizes access for records [HTTPs]"
-        // controllerMedia    -> authController "Authorizes access for records [HTTPs]"
-        // controllerMessages -> authController "Authorizes access for records [HTTPs]"
 
         mobileApp -> authController "Uses"
         singlePageApplication -> authController "Uses"
