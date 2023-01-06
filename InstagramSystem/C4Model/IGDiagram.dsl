@@ -8,7 +8,7 @@ workspace {
             Facebook = softwareSystem "Facebook" "some functions to share and interact between the two systems" "Facebook"
             
             InstagramSystem = softwareSystem "Instagram System" "Allow user to view infomation about their Instagram accounts, activities interact posts and make interact with peoples" {
-                webApplication = container "Web Application" "Delivers the static content and the Internet Instagram single page application." "Dotnet core and 'Repoitory Pattern'" "WebBrowser"
+                webApplication = container "Web Application" "Delivers the static content and the Internet Instagram single page application." "Reactjs" "WebBrowser"
                 mobileApp = container "Mobile App" "Provides a limited subset of the Internet Instagram functionality to customers via their mobile device." "Reactjs" "MobileApp"
                 singlePageApplication = container "Single-Page Application" "Provides all of the internet instagram functionality and implementation that load only a single web browser" "JavaScript and Reactjs" "singlePageApplication"
                 database = container "Database" "Stores user registation infomation, access log, etc." "Sql server" "Database"
@@ -34,10 +34,10 @@ workspace {
                     serviceFbConnector =  component "FbConnectorService" "Intermediate class, Service to interact with FaceBook systems" "Dotnet Core"
                     serviceEmails = component "EmailService" "Send Email for some sistuation as forgotpassword or authorize accout" "MailKit/MimeKit"
 
-                    repositoryUSers = component "UserRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
-                    repositoryPosts = component "PostRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
-                    repositoryMedia = component "MediaRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
-                    repositoryMessages = component "MessagerRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended" "Framework Entity(LinQ) - 'repository pattern'"
+                    repositoryUSers = component "UserRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended, CRUD User with db" "Framework Entity(LinQ) - 'repository pattern'"
+                    repositoryPosts = component "PostRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended,  CRUD Posts with db" "Framework Entity(LinQ) - 'repository pattern'"
+                    repositoryMedia = component "MediaRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended  CRUD Media with db" "Framework Entity(LinQ) - 'repository pattern'"
+                    repositoryMessages = component "MessagerRepository" "Query directly with db, all method names conform to naming conventions with interface so can extended,  CRUD Message with db" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryPostComments = component "PostCommentRepository" "Query directly with db, query comment on post" "Framework Entity(LinQ) - 'repository pattern'"
                     repositoryPostLikes = component "PostLikeRepository" "Query directly with db, query like on post" "Framework Entity(LinQ) - 'repository pattern'"
 
@@ -68,8 +68,8 @@ workspace {
 
         #ralationships of component - API Application
 
-        mobileApp -> authController "Uses"
-        singlePageApplication -> authController "Uses"
+        mobileApp -> authController "Make API call to" "Json/HTTPs"
+        singlePageApplication -> authController "Make API call to" "Json/HTTPs"
         authController -> serviceUsers "Uses"
         authController -> serviceEmails "Uses"
 
