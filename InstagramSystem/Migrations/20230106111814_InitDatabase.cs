@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InstagramSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class InitDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,7 +58,8 @@ namespace InstagramSystem.Migrations
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Privacy = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,6 +84,7 @@ namespace InstagramSystem.Migrations
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     hagtag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<int>(type: "int", nullable: true),
+                    Privacy = table.Column<int>(type: "int", nullable: false),
                     FileURL = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
@@ -107,7 +109,8 @@ namespace InstagramSystem.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     UserFollowerId = table.Column<int>(type: "int", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

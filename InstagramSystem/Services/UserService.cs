@@ -201,8 +201,13 @@ namespace InstagramSystem.Services
         public async Task<UserFollower> FollowUser(int userId)
         {
             var user = GetCurrentUser();
+            int followerId = int.Parse(user.UserId);
+            if(userId==followerId)
+            {
+                return null;
+            }
             var userFollower = new UserFollower();
-            userFollower.UserFollowerId = int.Parse(user.UserId);
+            userFollower.UserFollowerId = followerId;
             userFollower.UserId = userId;
             userFollower.CreateAt = DateTime.Now;
             userFollower.Status = ((int)EUserFollowerStatus.Pending);
