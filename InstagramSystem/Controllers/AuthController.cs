@@ -133,12 +133,12 @@ namespace InstagramSystem.Controllers
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
-                    //new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.FullName),
                     new Claim(ClaimTypes.Role, role),
                     new Claim("Username", user.UserName),
                     new Claim("UserId", user.Id.ToString()),
-
+                    new Claim("Privacy", user.Id.ToString()),
                     new Claim("TokenId", Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),

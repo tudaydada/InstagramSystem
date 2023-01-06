@@ -45,6 +45,9 @@ namespace InstagramSystem.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Privacy")
+                        .HasColumnType("int");
+
                     b.Property<int?>("State")
                         .HasColumnType("int");
 
@@ -171,6 +174,9 @@ namespace InstagramSystem.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<int>("Privacy")
+                        .HasColumnType("int");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -224,6 +230,9 @@ namespace InstagramSystem.Migrations
 
                     b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");

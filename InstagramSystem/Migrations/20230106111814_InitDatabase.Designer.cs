@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InstagramSystem.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230102093645_InitDatabase")]
+    [Migration("20230106111814_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -176,6 +176,9 @@ namespace InstagramSystem.Migrations
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("Privacy")
+                        .HasColumnType("int");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");

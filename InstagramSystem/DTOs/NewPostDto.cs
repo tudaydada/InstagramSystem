@@ -8,6 +8,7 @@ namespace InstagramSystem.DTOs
 {
     public class NewPostDto
     {
+        [Required]
         public string Content { get; set; }
 
         public string? Type { get; set; } = EPostType.None.ToString();

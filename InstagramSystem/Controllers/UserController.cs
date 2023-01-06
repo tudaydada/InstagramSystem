@@ -1,11 +1,13 @@
 ﻿using InstagramSystem.DTOs;
 using InstagramSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InstagramSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private IUserService _userService;
@@ -45,11 +47,27 @@ namespace InstagramSystem.Controllers
         }
         [HttpGet]
         [Route("MyFriends")]
-        public IActionResult GetMyFriends()
+        public async Task<IActionResult> GetMyFriends()
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type.Equals("UserId"))?.Value ?? "";
+            var user = await _userService.GetFriendsById(int.Parse(userId));
+            return Ok(user);
+        }
+        [HttpGet]
+        [Route("Follow")]
+        public async Task<IActionResult> Follow(int userId)
         {
 
-            var user = _userService.GetCurrentUser();
-            return Ok(user);
+            var result = await _userService.FollowUser(userId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("Accept")]
+        public async Task<IActionResult> Accept(int userId)
+        {
+
+            var result = await _userService.ApproveRequestFollower(userId);
+            return Ok(result);
         }
         #region Follows
         //todo

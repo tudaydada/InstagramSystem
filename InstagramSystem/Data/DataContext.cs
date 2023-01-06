@@ -21,6 +21,14 @@ namespace InstagramSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Post>().Navigation(x => x.Users).AutoInclude();
+            modelBuilder.Entity<Post>().Navigation(x => x.PostComments).AutoInclude();
+            modelBuilder.Entity<Post>().Navigation(x => x.PostLikes).AutoInclude();
+
+            modelBuilder.Entity<User>().Navigation(x => x.UserFollowers).AutoInclude();
+            modelBuilder.Entity<User>().Navigation(x => x.UserRoles).AutoInclude();
+            modelBuilder.Entity<User>().Navigation(x => x.Posts).AutoInclude();
+
             modelBuilder.Entity<UserRole>().HasData(
                 new UserRole { Id = 1, Name = EUserRole.Admin.ToString() },
                 new UserRole { Id = 2, Name = EUserRole.User.ToString() } );
