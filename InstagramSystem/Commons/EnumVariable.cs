@@ -19,4 +19,9 @@
         None = 0,
         Sell =1,
     }
+    enum EUserPrivacy
+    {
+        Public = 0,
+        Private = 1
+    }
 }

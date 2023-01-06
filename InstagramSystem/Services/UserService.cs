@@ -15,6 +15,7 @@ namespace InstagramSystem.Services
         public string FullName { get; set; }
         public string UserId { get; set; }
         public string Role { get; set; }
+        public string Privacy { get; set; }
     }
     public interface IUserService
     {
@@ -25,7 +26,7 @@ namespace InstagramSystem.Services
         Task<ResponseDTO> ForgotPassword(ForgotPasswordDto forgotPasswordDto);
         UserClaim GetCurrentUser();
     }
-    
+
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
@@ -33,7 +34,7 @@ namespace InstagramSystem.Services
         private readonly DataContext _context;
         private readonly IEmailService _emailService;
 
-        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor,DataContext context,IEmailService emailService)
+        public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, DataContext context, IEmailService emailService)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
@@ -100,11 +101,11 @@ namespace InstagramSystem.Services
             }
             else
             {
-                var password = user.UserName + (DateTime.Now.ToString());
+                var password = RandomPassword();
                 var emailForm = new EmailFormDto();
                 emailForm.Subject = "Reset Password";
-                emailForm.Body = "UserName:"+user.UserName+"</br>Password:"+ password;
-                emailForm.To= user.Email;
+                emailForm.Body = "UserName:[" + user.UserName + "]_Password:[" + password + "]";
+                emailForm.To = user.Email;
                 try
                 {
                     _emailService.SendEmail(emailForm);
@@ -117,7 +118,7 @@ namespace InstagramSystem.Services
                         Message = "Please Check Your Email to get password"
                     };
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return new ResponseDTO
                     {
@@ -140,6 +141,7 @@ namespace InstagramSystem.Services
                 user.UserId = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("UserId"))?.Value ?? "";
                 user.Role = httpContext.User.FindFirstValue(ClaimTypes.Role) ?? "";
                 user.UserName = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("UserName"))?.Value ?? "";
+                user.Privacy = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("Privacy"))?.Value ?? "";
                 return user;
             }
             return user;
@@ -158,6 +160,38 @@ namespace InstagramSystem.Services
                 byte2String += targetData[i].ToString("x2");
             }
             return byte2String;
+        }
+        private string RandomPassword()
+        {
+            string LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
+            string UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string NUMERIC_CHARACTERS = "0123456789";
+            string SPECIAL_CHARACTERS = @"!#$%&*@\";
+            int PASSWORD_LENGTH_MIN = 8;
+            int PASSWORD_LENGTH_MAX = 12;
+
+            Random random = new Random();
+            string valid = "";
+
+            valid += (LOWERCASE_CHARACTERS[random.Next(0, LOWERCASE_CHARACTERS.Length)]);
+            valid += (UPPERCASE_CHARACTERS[random.Next(0, UPPERCASE_CHARACTERS.Length)]);
+            valid += (NUMERIC_CHARACTERS[random.Next(0, NUMERIC_CHARACTERS.Length)]);
+            valid += (SPECIAL_CHARACTERS[random.Next(0, SPECIAL_CHARACTERS.Length)]);
+            valid += (LOWERCASE_CHARACTERS[random.Next(0, LOWERCASE_CHARACTERS.Length)]);
+            valid += (UPPERCASE_CHARACTERS[random.Next(0, UPPERCASE_CHARACTERS.Length)]);
+            valid += (NUMERIC_CHARACTERS[random.Next(0, NUMERIC_CHARACTERS.Length)]);
+            valid += (SPECIAL_CHARACTERS[random.Next(0, SPECIAL_CHARACTERS.Length)]);
+
+
+
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            while (0 < PASSWORD_LENGTH_MIN--)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+
+            }
+            return res.ToString();
         }
         #endregion
 

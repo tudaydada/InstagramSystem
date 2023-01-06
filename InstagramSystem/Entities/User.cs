@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using InstagramSystem.Commons;
 
 namespace InstagramSystem.Entities
 {
@@ -43,7 +44,7 @@ namespace InstagramSystem.Entities
         public bool IsDelete { get; set; }
 
         public int RoleId { get; set; }
-
+        public int Privacy { get; set; } = ((int)EUserPrivacy.Public);
 
         [ForeignKey(nameof(RoleId))]
         public virtual UserRole UserRoles { get; set; }

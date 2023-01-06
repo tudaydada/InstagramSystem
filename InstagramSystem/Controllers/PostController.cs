@@ -1,4 +1,5 @@
-﻿using InstagramSystem.DTOs;
+﻿using InstagramSystem.Commons;
+using InstagramSystem.DTOs;
 using InstagramSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,10 +50,11 @@ namespace InstagramSystem.Controllers
         #endregion
         #region Create And Update
         [HttpPost]
-        [Route("NewPost")]
-        public IActionResult NewPost(NewPostDto post)
+        [Route("")]
+        public IActionResult CreatePost(NewPostDto post)
         {
-            return Ok(post);
+            var result = _postService.CreatePost(post);
+            return Ok(result);
         }
         [HttpPut]
         [Route("Update")]
